@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "dao.*, dto.*,common.*" %>
+<%@ page import = "dao.*, dto.*" %>
 <%@ include file="../common_head.jsp" %>
 
 <%
@@ -11,29 +11,20 @@
 %>
 <script>
 	alert("세션정보가 만료되었습니다.");
-	location.href="member_login.jsp";
+	location.href="/member/member_login.jsp";
 </script>
 <%
 	} else{
-		dto = dao.getMemberView(sessionId);%>
-<script>
-	function goUpdateForm(){
-		location.href="member_update.jsp";
-	}
+		String id = request.getParameter("t_id");
+		dto = dao.viewMember(id);%>
 	
-	function goExit(){
-		if(confirm("정말 탈퇴 하겠습니까?")){
-			let pw = prompt("비밀번호를 입력하시오");
-			if(pw === "<%=dto.getPassword()%>"){
-				join.method="post";
-				join.action="db_member_exit.jsp";
-				join.submit();
-			}else{
-				alert("비밀번호가 다릅니다");
-			}
-		} else{
-			return;
-		}
+
+<script>
+	function goLevelUpdate(){
+		mem.t_id.value="<%=id%>";
+		mem.method="post";
+		mem.action="db_member_level_update.jsp";
+		mem.submit();
 	}
 </script>
 
@@ -51,8 +42,9 @@
 			</p>
 			
 			
-			<form name="join">
-			<input type="hidden" name="t_id" value="<%=dto.getId()%>">
+			<form name="mem">
+			
+			
 			<table class="boardForm">
 			  <colgroup>
 				<col width="200" />
@@ -71,7 +63,11 @@
 				</tr>
 				<tr>
 				  <th>비빌번호</th>
-				  <td><%=CommonUtil.printAsterisk(dto.getPassword())%></td>
+				  <td></td>
+				</tr>
+				<tr>
+				  <th>비밀번호확인</th>
+				  <td></td>
 				</tr>
 				<tr>
 				  <th>지역</th>
@@ -116,14 +112,40 @@
 					<%=dto.getReg_date()%>
 				  </td>
 				</tr>
+				<%if(dto.getExit_gubun().equals("회원")){ %>
+				<tr>
+				  <th>권한</th>
+				  <td>
+				  	<select name="t_level">
+				  		<option value="member" <%if(dto.getLevel_gubun().equals("회원")) out.print("selected");%>>회원</option>
+				  		<option value="manager" <%if(dto.getLevel_gubun().equals("직원")) out.print("selected");%>>직원</option>
+				  		<option value="top" <%if(dto.getLevel_gubun().equals("관리자")) out.print("selected");%>>관리자</option>
+				  	</select>
+					<input type="button" onclick="goLevelUpdate()" value="권한수정">
+				  </td>
+				</tr>
+				<%} %>
+				<tr>
+				  <th>탈퇴여부</th>
+				  <td>
+					<%=dto.getExit_gubun()%>
+				  </td>
+				</tr>
+				<tr>
+				  <th>탈퇴일</th>
+				  <td>
+					<%=dto.getExit_date()%>
+				  </td>
+				</tr>
 			  </tbody>
 			</table>
+			
+			<input type="hidden" name="t_id" value="1">
 			</form>
 			
 			
 			<div class="buttonGroup_center">
-				<a href="javascript:goUpdateForm()" class="butt">정보수정</a>
-				<a href="javascript:goExit()" class="butt">회원탈퇴</a>
+				<a href="javascript:history.back()" class="butt">이전</a>
 		<!--  
 				<input type="button" onclick="goJoin()" value="회원가입">
 				<input type="button" onclick="location.href='member_login.jsp'" value="로그인">

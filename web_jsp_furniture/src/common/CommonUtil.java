@@ -6,6 +6,16 @@ import java.util.Date;
 
 public class CommonUtil {
 	
+	//자리수만큼 *출력하기
+	
+	public static String printAsterisk(String munja) {
+		String result = "";
+		for(int i = 0; i<munja.length(); i++) {
+			result += "*";
+		}
+		return result;
+	}
+	
 	//새로운 게시글 번호 생성
 	public static String getNewNo(String format, String num) {
 		DecimalFormat df = new DecimalFormat(format);

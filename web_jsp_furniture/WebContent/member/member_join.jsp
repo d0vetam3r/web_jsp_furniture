@@ -2,6 +2,40 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../common_head.jsp" %>
 
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+	$("#checkID").click(function(){
+		if(join.t_id.value==""){
+			alert("ID입력");
+			join.t_id.focus();
+			return;
+		}
+		
+        $.ajax({
+            type : "POST",
+            url : "member_checkID.jsp",
+           // url : "test.txt",
+            data: "t_id="+join.t_id.value,
+            dataType : "text",
+            error : function(){
+               alert('통신실패!!');
+            },
+            success : function(data){
+               	if($.trim(data) === "사용가능"){
+               		$("#idResult").text(data).css("color","green");
+               		join.JBchecker.value = "0";
+              		join.idChecker.value = join.t_id.value;
+               	} else{
+               		$("#idResult").text(data).css("color","red");
+               		join.JBchecker.value = "1";
+               	}
+            }
+         });
+	});
+});
+//]]>
+</script>
 		<div id="b_left">
 			<P>MEMBER</P>
 			<ul>
@@ -18,8 +52,8 @@
 			
 			
 			<form name="join">
-			
-			
+			<input type="hidden" name="JBchecker" value="1">	
+			<input type="hidden" name="idChecker" value="1">	
 			<table class="boardForm">
 			  <colgroup>
 				<col width="200" />
@@ -30,7 +64,10 @@
 				  <th><label for="id">I D</label></th>
 				  <td>
 					<input name="t_id" maxlength="10" type="text" size="10" id="id" title="id입력하세요">
-					<input type="button" onclick="checkId()" value="ID중복검사" class="checkB">
+					<input type="button" id="checkID" value="ID중복검사" class="checkB">
+					<span id="idResult">
+					
+					</span>
 				  </td>
 				</tr>
 				<tr>
@@ -129,6 +166,16 @@
 		if(checkValue(join.t_address, "주소 입력!")) return;
 		if(checkValue(join.t_tel_1, "전화번호 입력!") || checkValue(join.t_tel_2, "전화번호 입력!") || checkValue(join.t_tel_3, "전화번호 입력!")) return;
 		if(checkValue(join.t_gender, "성별 선택!")) return;
+		if(join.JBchecker.value == "1"){
+			alert("ID 중복검사를 완료하지 않았습니다.");
+			join.t_id.focus();
+			return;
+		} else if(join.idChecker.value != join.t_id.value){
+			alert("ID 중복검사를 다시 해 주세요");
+			
+			join.t_id.focus();
+			return;
+		}
 		
 		join.method="post";
 		join.action="db_member_join.jsp";

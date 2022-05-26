@@ -15,6 +15,27 @@ public class Freeboard_dao {
 	PreparedStatement 	ps 	= null;
 	ResultSet 			rs 	= null;
 	
+	public int getMaxOrder(String no) {
+		int result = 0;
+		String query = "select nvl(max(reg_order),0) from homepage_김세훈_comment where no='"+no+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		
+		return result;
+	}
+	
 	public String idName(String reg_id) {
 		String result = "";
 		String query = "select name from homepage_김세훈_member where id='"+reg_id+"'";

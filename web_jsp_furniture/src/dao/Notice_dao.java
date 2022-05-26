@@ -14,6 +14,11 @@ public class Notice_dao {
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	
+	public String getNoticeTitle(String title) {
+		if(title.length()>16) return title.substring(0,16)+"...";
+		else return title;
+	}
+	
 	public int deleteNotice(String no) {
 		int result = 0;
 		String query = "delete homepage_김세훈_notice where no ='"+no+"'";
