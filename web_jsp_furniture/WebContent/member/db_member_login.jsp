@@ -6,7 +6,7 @@
 	Member_dao dao = new Member_dao();
 
 	String id = request.getParameter("t_id");
-	String pw = request.getParameter("t_pw");
+	String pw = dao.encryptSHA256(request.getParameter("t_pw"));
 	
 	ArrayList<String> info = dao.getCheckLogin(id,pw);
 	String msg = "";

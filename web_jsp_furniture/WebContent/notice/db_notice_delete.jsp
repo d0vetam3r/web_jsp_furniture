@@ -1,14 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="dao.*"%>
+<%@ page import="dao.*,common.*"%>
+<%@ page import="java.io.*" %>
 <%
 	String no = request.getParameter("v_no");
+	String delAttach = request.getParameter("t_attach");
+	
+
 	Notice_dao dao = new Notice_dao();
 	int result = dao.deleteNotice(no);
 	
 	String msg = "삭제실패 관리자에게 문의바랍니다.";
 	if(result == 1){
 		msg = "삭제성공";
+		if(!delAttach.equals("")){
+			File file = new File(CommonUtil.getFile_dir_notice(),delAttach);
+			file.delete();
+		}
 	}
 %>
 <!DOCTYPE html>

@@ -113,7 +113,7 @@ public class Freeboard_dao {
 
 	public Freeboard_dto getView(String no) {
 		Freeboard_dto dto = null;
-		String query = "select no, title, content, reg_id,to_char(reg_date,'yyyy-MM-dd') as reg_date, hit\r\n"
+		String query = "select no, title, content, reg_id,to_char(reg_date,'yyyy-MM-dd') as reg_date, hit, attach\r\n"
 				+ "from homepage_김세훈_freeboard where no = '" + no + "'";
 		String hit = "";
 		try {
@@ -127,8 +127,9 @@ public class Freeboard_dao {
 				String reg_info = rs.getString(4);
 				String reg_date = rs.getString(5);
 				hit = rs.getString(6);
+				String attach = rs.getString(7);
 
-				dto = new Freeboard_dto(no, title, content, hit, reg_info, reg_date);
+				dto = new Freeboard_dto(no, title, content, hit, reg_info, reg_date, attach);
 			}
 			if (dto != null) {
 				int update = updateHit(hit, no);
@@ -170,7 +171,7 @@ public class Freeboard_dao {
 		ArrayList<Freeboard_dto> dtos = new ArrayList<>();
 		;
 		String query = "select * from(select tbl.*, rownum as rnum from(select no,title,content,reg_id,to_char(reg_date,'yyyy-MM-dd')\r\n"
-				+ "as reg_date,hit from homepage_김세훈_freeboard where " + select + " like '%" + search
+				+ "as reg_date,hit, attach from homepage_김세훈_freeboard where " + select + " like '%" + search
 				+ "%' order by no desc)tbl) where rnum>=" + start + " and rnum<=" + end + "";
 
 		try {
@@ -185,8 +186,9 @@ public class Freeboard_dao {
 				String reg_info = rs.getString(4);
 				String reg_date = rs.getString(5);
 				String hit = rs.getString(6);
+				String attach = rs.getString(7);
 
-				Freeboard_dto dto = new Freeboard_dto(no, title, content, hit, reg_info, reg_date);
+				Freeboard_dto dto = new Freeboard_dto(no, title, content, hit, reg_info, reg_date, attach);
 				dtos.add(dto);
 
 			}
@@ -222,8 +224,8 @@ public class Freeboard_dao {
 	public int saveFree(Freeboard_dto dto) {
 		int result = 0;
 		String query = "insert into homepage_김세훈_freeboard\r\n" + 
-				"(no,title,content,reg_id,reg_date) values\r\n" + 
-				"('"+dto.getNo()+"','"+dto.getTitle()+"','"+dto.getContent()+"','"+dto.getReg_id()+"','"+dto.getReg_date()+"')";
+				"(no,title,content,reg_id,reg_date,attach) values\r\n" + 
+				"('"+dto.getNo()+"','"+dto.getTitle()+"','"+dto.getContent()+"','"+dto.getReg_id()+"','"+dto.getReg_date()+"','"+dto.getAttach()+"')";
 		
 		try {
 			con = DBConnection.getConnection();

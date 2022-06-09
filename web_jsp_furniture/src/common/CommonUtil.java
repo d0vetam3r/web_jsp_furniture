@@ -5,12 +5,32 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CommonUtil {
+	//첨부파일 경로
+	public static String getFile_dir_furniture(){
+		String dir ="C:/Users/dove99/Desktop/track7_java/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/web_jsp_furniture/attach/furniture";
+		return dir;
+	}
+	
+	public static String getFile_dir_notice(){
+		String dir ="C:/Users/dove99/Desktop/track7_java/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/web_jsp_furniture/attach/notice";
+		return dir;
+	}
+	
+	public static String getFile_dir_news(){
+		String dir ="C:/Users/dove99/Desktop/track7_java/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/web_jsp_furniture/attach/news";
+		return dir;
+	}
+	
+	public static String getFile_dir_freeboard(){
+		String dir ="C:/Users/dove99/Desktop/track7_java/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/web_jsp_furniture/attach/freeboard";
+		return dir;
+	}
 	
 	//자리수만큼 *출력하기
 	
-	public static String printAsterisk(String munja) {
+	public static String printAsterisk(int pwLength) {
 		String result = "";
-		for(int i = 0; i<munja.length(); i++) {
+		for(int i = 0; i<pwLength; i++) {
 			result += "*";
 		}
 		return result;

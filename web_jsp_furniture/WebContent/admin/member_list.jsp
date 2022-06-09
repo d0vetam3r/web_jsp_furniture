@@ -65,6 +65,7 @@ function goPage(pageNumber){
 			<P>MANAGER</P>
 			<ul>
 				<li><a href="/admin/member_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span> NOTICE</a></li>
+				<li><a href="/admin/furniture_list.jsp"><span class="fnt"></span> FURNITHRE LIST</a></li>
 			</ul>
 		</div>
 		

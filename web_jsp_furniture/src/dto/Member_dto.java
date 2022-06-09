@@ -2,10 +2,11 @@ package dto;
 
 public class Member_dto {
 	private String id, name, password, area, address, tel_1, tel_2, tel_3, gen, hobby_traval, hobby_reading, hobby_sports, reg_date, level_gubun, exit_gubun, exit_date;
+	private int pw_length;
 	//회원가입
 	public Member_dto(String id, String name, String password, String area, String address, String tel_1,
 			String tel_2, String tel_3, String gen, String hobby_traval, String hobby_reading, String hobby_sports,
-			String reg_date, String level_gubun, String exit_gubun, String exit_date) {
+			String reg_date, String level_gubun, String exit_gubun, String exit_date, int pw_length) {
 		super();
 		this.id 			= id;
 		this.name 			= name;
@@ -23,6 +24,7 @@ public class Member_dto {
 		this.level_gubun 	= level_gubun;
 		this.exit_gubun 	= exit_gubun;
 		this.exit_date 		= exit_date;
+		this.pw_length		= pw_length;
 	}
 	
 	//관리자 페이징
@@ -34,6 +36,9 @@ public class Member_dto {
 		this.reg_date = reg_date;
 		this.level_gubun = level_gubun;
 		this.exit_gubun = exit_gubun;
+	}
+	public int getPw_length() {
+		return pw_length;
 	}
 	public String getId() {
 		return id;

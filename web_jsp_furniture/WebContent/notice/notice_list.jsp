@@ -120,7 +120,7 @@
 					<tr>
 						<td><%=start_number--%></td>
 						<td class="t_center"><a style="cursor:pointer" href="javascript:goView('<%=dtos.get(i).getNo()%>')"><%=dtos.get(i).getTitle() %></a></td>
-						<td><%if(dtos.get(i).getAttach() != null) {%><img src="../images/clip.png"><%} %></td>
+						<td><%if(dtos.get(i).getAttach() != null) {%><a style="cursor:pointer" onclick="C:/Users/dove99/git/web_jsp_furniture/web_jsp_furniture/WebContent/attach/notice/<%=dtos.get(i).getAttach()%>"><img src="../images/clip.png"></a><%} %></td>
 						<td><%=dtos.get(i).getReg_info()%></td>
 						<td><%=dtos.get(i).getReg_date()%></td>
 						<td><%=dtos.get(i).getHit()%></td>

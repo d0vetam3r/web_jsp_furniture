@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 				  <th>비빌번호</th>
-				  <td><%=CommonUtil.printAsterisk(dto.getPassword())%></td>
+				  <td><%=CommonUtil.printAsterisk(dto.getPw_length())%></td>
 				</tr>
 				<tr>
 				  <th>지역</th>

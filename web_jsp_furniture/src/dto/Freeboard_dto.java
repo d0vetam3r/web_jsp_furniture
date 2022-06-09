@@ -1,9 +1,9 @@
 package dto;
 
 public class Freeboard_dto {
-	private String no,title,content,hit,reg_id,reg_date;
+	private String no,title,content,hit,reg_id,reg_date,attach;
 	
-	public Freeboard_dto(String no, String title, String content, String hit, String reg_id, String reg_date) {
+	public Freeboard_dto(String no, String title, String content, String hit, String reg_id, String reg_date, String attach) {
 		super();
 		this.no = no;
 		this.title = title;
@@ -11,6 +11,8 @@ public class Freeboard_dto {
 		this.hit = hit;
 		this.reg_id = reg_id;
 		this.reg_date = reg_date;
+		this.attach = attach;
+
 	}
 	public String getNo() {
 		return no;
@@ -29,5 +31,8 @@ public class Freeboard_dto {
 	}
 	public String getReg_date() {
 		return reg_date;
+	}
+	public String getAttach() {
+		return attach;
 	}
 }

@@ -1,43 +1,39 @@
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="dto.*,dao.*,common.*" %>
-<%
+<%@ page import="dao.*,dto.*,common.*" %>
+<%@ page import="com.oreilly.servlet.*" %>
+<% 
+	request.setCharacterEncoding("utf-8");
 	News_dao dao = new News_dao();
 	
-	String max_no	= dao.getMaxNo();
-	String no 		= CommonUtil.getNewNo("N000", max_no);
-	String title 	= request.getParameter("t_title");
-	String content 	= request.getParameter("t_content");
-	String attach 	= request.getParameter("t_attach");
-	String reg_id 	= (String)session.getAttribute("sessionName");
-	String reg_date = request.getParameter("t_reg_date");
+	String file_dir = "C:/Users/dove99/git/web_jsp_furniture/web_jsp_furniture/WebContent/attach/news";
+	int sizeLimit = 1024 * 1024 * 10;
 	
-	out.print("max_no	: " + max_no	+"<br>"); 
-	out.print("no 		: " + no 		+"<br>");
-	out.print("title 	: " + title 	+"<br>");
-	out.print("content  : " + content   +"<br>");
-	out.print("attach 	: " + attach 	+"<br>");
-	out.print("reg_id 	: " + reg_id 	+"<br>");
-	out.print("reg_date : " + reg_date  +"<br>");
+	MultipartRequest mpr = new MultipartRequest(request, file_dir, sizeLimit,"utf-8",new DefaultFileRenamePolicy());
 	
-	if(reg_id == null){
-	%>
-	<script>
-	alert("로그인 하지 않았거나 권한이 없습니다.");
-	location.href="/index.jsp";
-	</script>
-<%
-	} else{
-	News_dto dto = new News_dto(no,title,content,attach,"",reg_id,reg_date);
+	String attachName = mpr.getFilesystemName("t_attach");
 	
-	int result = dao.saveNews(dto);
-	String msg = "등록에 실패하였습니다";
-	
-	if(result == 1){
-		msg = "등록성공";
+	String maxNo = dao.getMaxNo();
+
+	String no 		= CommonUtil.getNewNo("N000", maxNo);
+	String title 	= mpr.getParameter("t_title");
+	String content 	= mpr.getParameter("t_content");
+	String reg_id 	= (String)session.getAttribute("sessionId");
+	String reg_date = mpr.getParameter("t_reg_date");
+	if(attachName == null) {
+		attachName = "";
 	}
-	out.print(msg);
-	%>
+
+	News_dto dto = new News_dto(no,title,content,attachName,"",reg_id,reg_date);
+	
+	int result = dao.newsSave(dto);
+	String msg = "등록되었습니다";
+	if(result != 1){
+		msg = "등록실패";
+	}
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,11 +41,10 @@
 <title>Insert title here</title>
 </head>
 <script>
-alert("<%=msg%>");
-location.href="/news/news_list.jsp";
+	alert("<%=msg%>");
+	location.href="news_list.jsp";
 </script>
 <body>
-왔따~~~~~~~~~~~~~
+왓따~~~~
 </body>
 </html>
-<%}%>

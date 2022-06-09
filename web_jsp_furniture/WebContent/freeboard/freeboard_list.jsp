@@ -99,7 +99,8 @@
 			<table class="boardList">
 				<colgroup>
 					<col width="5%">
-					<col width="65%">
+					<col width="60%">
+					<col width="5%">
 					<col width="10%">
 					<col width="14%">
 					<col width="6%">
@@ -108,6 +109,7 @@
 					<tr>
 						<th>No</th>
 						<th>Title</th>
+						<th>Attach</th>
 						<th>Reg Name</th>
 						<th>Reg Date</th>
 						<th>Hit</th>
@@ -118,6 +120,7 @@
 					<tr>
 						<td><%=start_number--%></td>
 						<td class="t_center"><a style="cursor:pointer" href="javascript:goView('<%=dtos.get(i).getNo()%>')"><%=dtos.get(i).getTitle() %></a></td>
+						<td><%if(dtos.get(i).getAttach() != null) {%><a style="cursor:pointer" href="/WebContent/attach/news/<%=dtos.get(i).getAttach()%>"><img src="../images/clip.png"></a><%} %></td>
 						<td><%=dao.idName(dtos.get(i).getReg_id())%></td>
 						<td><%=dtos.get(i).getReg_date()%></td>
 						<td><%=dtos.get(i).getHit()%></td>

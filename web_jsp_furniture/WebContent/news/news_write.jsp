@@ -2,29 +2,74 @@
     pageEncoding="UTF-8"%>
 <%@ page import="common.*" %>
 <%@ include file="../common_head.jsp" %>
-<%if(!sessionLevel.equals("top") && !sessionLevel.equals("manager")){%>
-	<script>
-		alert("로그인 하지 않았거나 권한이 없습니다.");
-		location.href="/index.jsp";
-	</script>
-<% }%>
 <script>
-	function goNewsSave(){
-		if(checkValue(news.t_title, "제목을 입력하세요")) return;
-		if(checkValue(news.t_content, "내용을 입력하세요")) return;
-		if(checkValue(news.t_reg_date, "작성일을 입력하세요")) return;
-		news.method="post";
-		news.action="db_news_save.jsp";
-		news.submit();
+	function goSave(){
+		/**************첨부파일 검사*****************/
+		// 확장자 검사
+		
+		var fileName = news.t_attach.value;
+		if(fileName !=""){
+			var pathFileName = fileName.lastIndexOf(".")+1;    //확장자 제외한 경로+파일명
+			var extension = (fileName.substr(pathFileName)).toLowerCase();	//확장자명
+			//파일명.확장자
+			//if(extension != "jpg" && extension != "gif" && extension != "png"){
+			if(extension != "pdf" && extension != "hwp" && extension != "txt"){
+				alert(extension +" 형식 파일은 업로드 안됩니다. 한글, PDF 파일만 가능!");
+				return;
+			}		
+		}
+	
+		// 첨부 용량 체크	
+		var file = news.t_attach;
+		var fileMaxSize  = 5; // 첨부 최대 용량 설정
+		if(file.value !=""){
+			// 사이즈체크
+			var maxSize  = 1024 * 1024 * fileMaxSize;  
+			var fileSize = 0;
+
+			// 브라우저 확인
+			var browser=navigator.appName;
+			// 익스플로러일 경우
+			if (browser=="Microsoft Internet Explorer"){
+				var oas = new ActiveXObject("Scripting.FileSystemObject");
+				fileSize = oas.getFile(file.value).size;
+			}else {
+			// 익스플로러가 아닐경우
+				fileSize = file.files[0].size;
+			}
+			//alert("파일사이즈 : "+ fileSize);
+
+			if(fileSize > maxSize){
+				alert(" 첨부파일 사이즈는 "+fileMaxSize+"MB 이내로 등록 가능합니다. ");
+				return;
+			}	
+		}
+/**************첨부파일 검사*****************/
+		
+		if(checkValue(News.t_title, "제목을 입력하세요")) return;
+		if(checkValue(News.t_content, "내용을 입력하세요")) return;
+		if(checkValue(News.t_reg_date, "작성일을 입력하세요")) return;
+		News.method="post";
+		News.action="db_news_save.jsp";
+		News.submit();
+		
 	}
 </script>
-}
-
+<%
+	if(!sessionLevel.equals("top")){
+	%>
+	<script>
+	alert("로그인 하지 않았거나 권한이 없습니다.");
+	location.href="/index.jsp";
+	</script>
+<%
+	}
+%>
 		<div id="b_left">
 			<P>NOTICE & NEWS</P>
 			<ul>
-				<li><a href="notice_list.jsp"> NOTICE</a></li>
-				<li><a href="/news/news_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>NEWS</a></li>
+				<li><a href="/notice/notice_list.jsp">NOTICE</a></li>
+				<li><a href="/news/news_list.jsp">NEWS</a></li>
 				<li><a href="/qanda/qanda_list.jsp">Q & A</a></li>
 				<li><a href="/freeboard/freeboard_list.jsp">FREE BOARD</a></li>
 				<li><a href="/etc/etc_list.jsp">ETC</a></li>
@@ -33,10 +78,9 @@
 		
 		<div id="b_right">
 			<p class="n_title">
-				NEWS
+				NOTICE
 			</p>
-			
-			<form name="news">
+			<form name="News" enctype="multipart/form-data">
 			<table class="boardForm">
 				<colgroup>
 					<col width="15%">
@@ -51,7 +95,7 @@
 					</tr>	
 					<tr>
 						<th>Content</th>
-						<td colspan="3"><textarea name="t_content" class="textArea_H250"></textarea></td>
+						<td colspan="3"><textarea class="textArea_H250" name="t_content"></textarea></td>
 					</tr>	
 					<tr>
 						<th>Attach</th>
@@ -61,19 +105,17 @@
 						<th>Writer</th>
 						<td><%=sessionName%></td>
 						<th>RegDate</th>
-						<td><input type="date" class="input130" name="t_reg_date" value="<%=CommonUtil.getToday()%>"></td>
-					</tr>
+						<td><input type="date" name="t_reg_date" value="<%=CommonUtil.getToday()%>" class="input130"></td>
+					</tr>	
 				</tbody>
 			</table>
 			</form>
 			<div class="buttonGroup">
-				<a href="javascript:goNewsSave()" class="butt">Save</a>
-				<a href="news_list.jsp" class="butt">List</a>
+				<a href="javascript:goSave()" class="butt">Save</a>
+				<a href="News_list.jsp" class="butt">List</a>
 			</div>	
 		</div>	
-
 <%@ include file="../common_footer.jsp" %>
-
 	</div>	
 </body>
 </html>

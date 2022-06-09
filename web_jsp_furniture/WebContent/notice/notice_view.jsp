@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="dao.*,dto.*" %>
+<%@ page import="dao.*,dto.*,common.*" %>
 <%@ include file="../common_head.jsp" %>
 <%
 	String no = request.getParameter("v_no");
@@ -32,6 +32,8 @@
 </script>
 	<form name = "view">
 		<input type="hidden" name="v_no" value="1">
+		<input type="hidden" name="t_attach" value="<%=CommonUtil.checkNull(dto.getAttach())%>">
+
 	</form>
 			<div id="b_left">
 			<P>NOTICE & NEWS</P>
@@ -68,9 +70,16 @@
 							<textarea class="textArea_H250_noBorder" readonly><%=dto.getContent()%></textarea>
 						</td>
 					</tr>	
+						
 					<tr>
 						<th>Attach</th>
-						<td colspan="3"><%=dto.getAttach()%></td>
+						<td colspan="3">
+						<%if(dto.getAttach().equals("없음")){ 
+							out.print(dto.getAttach());
+							} else{%>
+						<a href="/common/filedown.jsp?t_fileDir=notice&t_file=<%=dto.getAttach()%>"><%=dto.getAttach()%></a>
+						<%} %>
+						</td>
 					</tr>	
 					<tr>
 						<th>Writer</th>

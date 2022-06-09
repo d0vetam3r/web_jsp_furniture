@@ -6,6 +6,13 @@ String sessionId 	= (String)session.getAttribute("sessionId");
 String sessionName 	= (String)session.getAttribute("sessionName");
 String sessionLevel = (String)session.getAttribute("sessionLevel");
 
+Member_dao ddd = new Member_dao();
+String pw = "222";
+String r_pw = ddd.encryptSHA256(pw);
+System.out.println("비번 : " + r_pw);
+System.out.println("비번길이 : " + r_pw.length());
+
+
 if(sessionId == null){
 	sessionId = "";
 	sessionName = "";
@@ -13,7 +20,10 @@ if(sessionId == null){
 }
 
 	Notice_dao dao = new Notice_dao();
+	Furniture_dao dao2 = new Furniture_dao();
+	
 	ArrayList<Notice_dto> dtos = dao.getNoticeListPaging("title", "", 1, 7);
+	ArrayList<Furniture_dto> dtos2 = dao2.getFurnitureList();
 %>
 <html>
 <head>
@@ -220,17 +230,65 @@ if(sessionId == null){
 				</ul>
 			<%}; %>
 			</div>
-		
+<style>
+	.b_center_middle img{
+	width:105px;
+	height:105px;
+	}
+	.b_center_middle a{
+	position:relative;
+	display:inline-block;
+	}
+
+	.b_center_middle a .over{
+	position:absolute;
+	top:0;
+	left:0;
+	opacity:0;
+	background:white;
+	width:105px;
+	height:105px;
+	}
+	.b_center_middle a:hover .over{
+	transform:translate(105,100%);
+	transition:0.5s;
+	opacity:0.8;
+	}
+	.over p{text-align:center; color:white"}
+	.over .f_size{
+	font-size:5;
+	}
+
+</style>
 		</div>
 		<div id="b_center">
-			<p class="b_center_top"><img src="images/center_top.jpg"></p>
-			<p class="b_center_middle">
-				<a href=""><img src="images/center_middle_1.jpg"><a href=""><img src="images/center_middle_2.jpg"><a href=""><img src="images/center_middle_3.jpg"></a>
-			</p>
-			<p class="b_center_bottom">
-				<a href=""><img src="images/center_middle_4.jpg"><a href=""><img src="images/center_middle_5.jpg"><a href=""><img src="images/center_middle_6.jpg"></a>
-			</p>
+			<p class="b_center_top">
+			<img src="images/center_top.jpg"></p>
+			<div class="b_center_middle">
+			<%for(Furniture_dto dto:dtos2){ %>
+				<a href=""><img src="/attach/furniture/<%=dto.getAttach()%>">
+					<div class="over">
+						<p class="f_name"><%=dto.getName() %></p>
+						<p class="f_size"><%=dto.getSize() %></p>
+					</div>
+				</a>
+			<%}%>
+			</div>
 		</div>
+		<!-- 
+		<div id="b_center">
+			<p class="b_center_top"><img src="images/center_top.jpg"></p>
+			<div class="b_center_middle">
+				<%for(int i = 0; i<dtos2.size(); i++){%><a href=""><img src="/attach/furniture/<%=dtos2.get(i).getAttach()%>">
+				<div class="over">
+					<p class="f_name">하기귀찮아서</p>
+					<p class="f_size">안할랍니다</p>
+				</div>
+			</a>
+			<%}%>
+			</div>
+		</div>
+		 -->
 		<div id="b_right">
 			<img src="images/center_right.jpg">
 		</div>
